@@ -58,6 +58,7 @@ function createcircle() {
 function CloseAllAffichage(){
     closeAffichageAlert();
     closeAffichageButton();
+    afficherButtonRetour();
 }
 function closeAffichageAlert(){
     let close = document.getElementsByClassName("closebtn");
@@ -75,6 +76,23 @@ function closeAffichageButton(){
         setTimeout(function(){ close.style.display = "none"; }, 400);
 }
 function afficherButtonRetour(){
+    document.getElementById('start')
+        .insertAdjacentHTML('beforebegin',
+            '<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" ' +
+            'id="buttonRetour" style="position: relative; float: left;">RETOUR</button>');
 
+   // Une autre méthode avec plus de contrainte de crée ce button
+
+    // var button = document.createElement('button');
+    // button.className = "mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent";
+    // button.innerHTML = "RETOUR";
+    // button.id = "buttonRetour"
+    // button.style.position = "relative";
+    // button.style.float = "left";
+    // document.getElementsByTagName('body')[0].appendChild(button);
+
+    document.getElementById('buttonRetour').addEventListener('click', function() {
+        location.reload();
+    }, false);
 }
 
