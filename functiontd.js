@@ -11,20 +11,90 @@ for (i = 0; i < close.length; i++) {
     }
 }
 
+// Tableau et fonction qui écoute si une touche est pressée ou pas (Up down)
+// Le tableau contient la valeur ascii de la touche pressées Le tableau nous permet de gérer les diagonales mais aussi de réduire le delais
+// lors d'une touche pressée
+var keyState = {};
+window.addEventListener('keydown',function(e){
+    keyState[e.keyCode || e.which] = true;
+},true);
+window.addEventListener('keyup',function(e){
+    keyState[e.keyCode || e.which] = false;
+},true);
 
+// Variable d'angle et de calcul de la positin de la souris sur l'écran
+var posCX;
+var posCY;
+var posCanonX;
+var posCanonY;
+var angleRadians;
+var angleDeg;
+// Fonction pour traquer la position du curseur de la souris sur la page
+function positionSouris(event) {
+    var canvas = document.getElementById("Canvas");
+    if(canvas != null) {
+        posCX = event.clientX;
+        posCY = event.clientY;
 
+        posCX -= canvas.offsetLeft;
+        posCY -= canvas.offsetTop;
 
+        console.log('Coordonnées de la souris : X = ' + posCX + ' Y = ' + posCY);
+        // angle en radians
+        angleRadians = Math.atan2(posCY - posy  ,  posCX- posx);
+        // angle  en degrees
+        angleDeg = Math.atan2(posCY - posy, posCX- posx) * 180 / Math.PI;
+        // console.log("Radian : " + angleRadians + '     degrees : '+ angleDeg);
+    }
+}
 
 // Fonction Main la fonction principlae de l'application
 function Main() {
     CloseAllAffichage();
-    draw();
-    createcircle();
+    drawCanvas();
+    createPlayer();
+    setInterval(Gameloop, 10);
 }
 
+function Gameloop(){
 
-// Librairie de fonctions Dessin affichage etc ...
-function draw(){
+    // La ligne ci dessous permet de clear tous le Canevas pour ne pas afficher les positions précédente de notre Player
+    ctx.clearRect(0, 0, canevas.width, canevas.height);
+    ctx.save();
+    createPlayer();
+
+    // Conditions qui lise la possiton en cours du PLayer et qui ne lui permette pas de ce déplacer hors du cadre de jeu
+    if(posx + depx < rayonPlayer || posx + depx < rayonPlayer) {
+        posx = (rayonPlayer);
+    }
+    if(posx + depx > canevas.width-rayonPlayer || posx + depx < rayonPlayer) {
+        posx = canevas.width-rayonPlayer;;
+    }
+    if(posy + depy < rayonPlayer || posy + depy < rayonPlayer) {
+        posy = (rayonPlayer);
+    }
+    if(posy + depy > canevas.height-rayonPlayer || posy + depy < rayonPlayer) {
+        posy = canevas.height-rayonPlayer;
+    }
+
+    // Fonction de déplacement lié aux fonction d écoute des touches plus haut
+    // Ici on fait des ajout et des soustractions de pixels dans le canvas
+    if (keyState[37]){
+        posx -= depx;
+    }
+    if (keyState[38]){
+        posy -= depy;
+    }
+    if (keyState[39]){
+        posx += depx;
+    }
+    if (keyState[40]){
+        posy += depy;
+    }
+}
+
+// Librairie de fonctions Dessin/ mouvement / et boucle d'actualisation etc ...
+function drawCanvas(){
     var map = document.createElement('canvas');
 
     map.id = "Canvas";
@@ -39,20 +109,40 @@ function draw(){
     body.appendChild(map);
 }
 
-function createcircle() {
-    var canevas = document.getElementById('Canvas');
+// PAS TOUCHE A CES VARIABLE GLOBALE LES FRRS MERCI
+// Variable de déplacement / position / carctéristique
+var posx = 562;
+var posy = 334;
+var depx = 3;
+var depy = 3;
+var rayonPlayer = 10;
+
+function createPlayer() {
+
+    // Création du Player
+    canevas = document.getElementById('Canvas');
     if (canevas.getContext) {
-        var ctx = canevas.getContext('2d');
-        var cercle = new Path2D();
-        cercle.arc(100, 35, 5, 0, 2 * Math.PI);
+        ctx = canevas.getContext('2d');
+        cercle = new Path2D();
+        ctx.beginPath();
+        cercle.arc(posx, posy, rayonPlayer, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fill(cercle);
+
+        ctx.translate(posx, posy);
+        ctx.rotate(angleRadians) ;
+        ctx.translate(-posx, -posy);
+        ctx.beginPath();
+        ctx.moveTo(posx,posy);
+        ctx.lineWidth=8;
+        ctx.lineCap='round';
+        ctx.lineTo(posx + rayonPlayer +2  , posy+ rayonPlayer +2 );
+
+        ctx.stroke();
+        ctx.fill();
+        ctx.restore();
     }
 }
-
-
-
-
-
 
 // Librairie de fonctions qui gère les transitions et affichages de la page
 function CloseAllAffichage(){
@@ -73,7 +163,7 @@ function closeAffichageAlert(){
 
 function closeAffichageButton(){
         let close = document.getElementById("start");
-        setTimeout(function(){ close.style.display = "none"; }, 400);
+        setTimeout(function(){ close.style.display = "none"; }, 100);
 }
 function afficherButtonRetour(){
     document.getElementById('start')
@@ -95,4 +185,3 @@ function afficherButtonRetour(){
         location.reload();
     }, false);
 }
-
