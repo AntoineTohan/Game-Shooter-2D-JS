@@ -29,6 +29,7 @@ var posCanonX;
 var posCanonY;
 var angleRadians;
 var angleDeg;
+
 // Fonction pour traquer la position du curseur de la souris sur la page
 function positionSouris(event) {
     var canvas = document.getElementById("Canvas");
@@ -39,15 +40,19 @@ function positionSouris(event) {
         posCX -= canvas.offsetLeft;
         posCY -= canvas.offsetTop;
 
-        console.log('Coordonnées de la souris : X = ' + posCX + ' Y = ' + posCY);
+        // console.log('Coordonnées de la souris : X = ' + posCX + ' Y = ' + posCY);
         // angle en radians
-        angleRadians = Math.atan2(posCY - posy  ,  posCX- posx);
+        angleRadians = Math.atan2(posCY - posy  ,  posCX- posx) - 0.7;
         // angle  en degrees
         angleDeg = Math.atan2(posCY - posy, posCX- posx) * 180 / Math.PI;
         // console.log("Radian : " + angleRadians + '     degrees : '+ angleDeg);
     }
 }
 
+
+
+
+// _____________________________________________________________________________________________________________________________
 // Fonction Main la fonction principlae de l'application
 function Main() {
     CloseAllAffichage();
@@ -56,7 +61,10 @@ function Main() {
     setInterval(Gameloop, 10);
 }
 
+// Fonction Gameloop est le jeu en lui même c'est tune fonction executer en boucle toute les 10 milième de secondes
 function Gameloop(){
+
+    // console.log(keyState);
 
     // La ligne ci dessous permet de clear tous le Canevas pour ne pas afficher les positions précédente de notre Player
     ctx.clearRect(0, 0, canevas.width, canevas.height);
@@ -93,7 +101,9 @@ function Gameloop(){
     }
 }
 
-// Librairie de fonctions Dessin/ mouvement / et boucle d'actualisation etc ...
+
+// _________________________________________________________________________________________________________________________________
+// Librairie de fonctions Dessin
 function drawCanvas(){
     var map = document.createElement('canvas');
 
@@ -103,6 +113,7 @@ function drawCanvas(){
     map.style.zIndex = 8;
     map.style.position = "absolute";
     map.style.border = "1px solid";
+    map.style.background="#F5F5F5";
 
 
     var body = document.getElementsByTagName("body")[0];
@@ -127,6 +138,7 @@ function createPlayer() {
         ctx.beginPath();
         cercle.arc(posx, posy, rayonPlayer, 0, 2 * Math.PI);
         ctx.stroke();
+        ctx.fillStyle="#5C6BC0";
         ctx.fill(cercle);
 
         ctx.translate(posx, posy);
@@ -137,13 +149,22 @@ function createPlayer() {
         ctx.lineWidth=8;
         ctx.lineCap='round';
         ctx.lineTo(posx + rayonPlayer +2  , posy+ rayonPlayer +2 );
-
+        ctx.strokeStyle = '#5C6BC0';
         ctx.stroke();
         ctx.fill();
         ctx.restore();
     }
 }
 
+
+
+
+
+
+
+
+
+// _____________________________________________________________________________________________________________________________________
 // Librairie de fonctions qui gère les transitions et affichages de la page
 function CloseAllAffichage(){
     closeAffichageAlert();
