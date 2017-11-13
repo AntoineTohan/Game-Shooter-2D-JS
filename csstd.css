@@ -40,7 +40,7 @@ padding: 50px;
 .alert {background-color: #4CAF50;}
 .alert.objjeu {background-color: #2196F3;}
 .alert.controlejeu {background-color: #ff9800;}
-
+.controlejeubug{background-color: red;}
 .closebtn {
     margin-left: 15px;
     color: white;
@@ -54,4 +54,10 @@ padding: 50px;
 
 .closebtn:hover {
     color: black;
+}
+
+.score{
+    position: relative;
+    float: left;
+    padding-left: 50px;
 }

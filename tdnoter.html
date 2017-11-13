@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.red-pink.min.css" />
 
 </head>
-<body onmousemove="positionSouris(event);">
+<body id="listener" onmousemove="positionSouris(event);">
 
 <!--EMPLACEMENT DU CANVAS ICI SAUF QUE JE METS AVEC CSS DANS LE DOM DIRECT -->
 
@@ -33,17 +33,29 @@
 
 <div class="alert objjeu">
     <span class="closebtn">&times;</span>
-    <strong>Objectif du jeu :</strong> Survivre au ennemis. Ne pas se faire toucher par les ennemis.
+    <strong>Objectif du jeu :</strong> Survivre aux ennemis. Ne pas se faire toucher par les ennemis.
 </div>
 
 <div class="alert controlejeu">
     <span class="closebtn">&times;</span>
-    <strong>Commandes du jeu : </strong> <br> -Déplacement : flèches directionelles <br> -Tirer : click gauche
+    <strong>Commandes du jeu : </strong> <br> - Déplacement : flèches directionelles <br> - Tirer : click gauche
 </div>
+
+    <div class="alert controlejeubug">
+        <span class="closebtn">&times;</span>
+        <strong>En cas de Bug :</strong> <br> <strong>- Problème : </strong> Si votre personnage continue à avancer toujours dans la même direction !
+        <br> <strong>- Solution : </strong> Il vous suffit d'appuyer sur la flèche directionelle vers laquelle votre personnage se déplace sans cesse (HAUT, BAS, DROITE, GAUCHE)
+        <br>
+        <br>
+        Ce bug sera corrigé d'ici peu de temps, merci de votre compréhension.
+    </div>
 </footer>
 
 <!--Nos scripts Javascript Ici -->
+<script src="Player.js"></script>
 <script src="functiontd.js"></script>
+<script src="Enemy.js"></script>
+<script src="Bullet.js"></script>
 
 <!--FrameWork JS pour affichage (Modal, Core du Framework HTML/CSS MDL -->
 <!--Aucun des frameworks est utilisés dans le jeu ! :) -->
